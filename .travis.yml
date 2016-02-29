@@ -1,0 +1,32 @@
+language: php
+
+php:
+  - 7.0
+
+services:
+  - mysql
+
+addons:
+  code_climate:
+    repo_token: 919d6d08c67a652192baa285135d5afead84b6c153ba906f6f2c7e3080342653
+
+before_install:
+  - mysql -e "create database IF NOT EXISTS swapp;" -uroot
+
+before_script:
+  - composer self-update
+  - composer install --prefer-source --no-interaction --dev
+  - cp .env.example .env
+  - php artisan key:generate
+  - php artisan migrate
+  - php artisan db:seed
+
+script:
+  - phpunit --coverage-clover build/logs/clover.xml
+
+after_script:
+  - vendor/bin/test-reporter
+
+notifications:
+  on_success: never
+  on_failure: always

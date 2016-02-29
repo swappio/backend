@@ -1,0 +1,30 @@
+engines:
+  duplication:
+    enabled: true
+    config:
+      languages:
+        - php
+  fixme:
+    enabled: true
+  phpmd:
+    enabled: true
+    checks:
+      CleanCode/StaticAccess:
+        enabled: false
+      CleanCode/ElseExpression:
+        enabled: false
+      Naming/ShortVariable:
+        enabled: false
+
+ratings:
+  paths:
+  - app/**
+   
+exclude_paths:
+- "tests/*"
+- "vendor/*"
+- "database/*"
+- "public/*"
+- "resources/*"
+- "config/*"
+- "bootstrap/*"

@@ -9,7 +9,7 @@ services:
 
 addons:
   code_climate:
-    repo_token: 919d6d08c67a652192baa285135d5afead84b6c153ba906f6f2c7e3080342653
+    repo_token: ed66781603cdad4678f641626c7bc1dda3f42e39e460f9606f0d3e0f442cc658
 
 before_install:
   - mysql -e "create database IF NOT EXISTS swapp;" -uroot

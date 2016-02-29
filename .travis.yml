@@ -5,6 +5,7 @@ php:
 
 services:
   - mysql
+  - redis
 
 addons:
   code_climate:

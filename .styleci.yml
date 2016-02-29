@@ -1,0 +1,13 @@
+preset: psr-2
+
+risky: false
+
+linting: true
+
+finder:
+  exclude:
+    - "tests"
+  name:
+    - "*.php"
+  path:
+    - "app/"

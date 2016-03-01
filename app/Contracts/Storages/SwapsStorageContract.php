@@ -34,22 +34,20 @@ interface SwapsStorageContract
 
     /**
      * @param Swap $swap
-     * @param \App\Models\Keyword[] $keywords
-     * @return mixed
-     */
-    public function saveKeywords($swap, $keywords);
-
-    /**
-     * @param Swap $swap
      * @param \App\Models\Wish[] $wishes
      * @return mixed
      */
     public function saveWishes($swap, $wishes);
 
     /**
-     * @param string[] $wishKeywords
-     * @param string[] $keywords
+     * @param string[] $tags
      * @return mixed
      */
-    public function findByKeywords($wishKeywords, $keywords);
+    public function findWithTags($tags);
+
+    /**
+     * @param string[] $tags
+     * @return mixed
+     */
+    public function findWithAnyOfTags($tags);
 }

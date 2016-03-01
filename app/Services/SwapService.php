@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Contracts\Services\Finders\MatchFinderContract;
 use App\Models\Swap;
 use App\Contracts\Storages\SwapsStorageContract;
 
@@ -18,39 +19,31 @@ class SwapService
     private $tagsService;
 
     /**
-     * @var KeywordsService
-     */
-    private $keywordsService;
-
-    /**
-     * @var WishService
-     */
-    private $wishService;
-
-    /**
      * @var SwapsGraphService
      */
     private $graphService;
 
     /**
+     * @var MatchFinderContract
+     */
+    private $matcher;
+
+    /**
      * SwapService constructor.
      * @param SwapsStorageContract $storage
      * @param TagsService $tagsService
-     * @param KeywordsService $keywordsService
-     * @param WishService $wishService
      * @param SwapsGraphService $graphService
+     * @param MatchFinderContract $matcher
      */
     public function __construct(SwapsStorageContract $storage,
                                 TagsService $tagsService,
-                                KeywordsService $keywordsService,
-                                WishService $wishService,
-                                SwapsGraphService $graphService)
+                                SwapsGraphService $graphService,
+                                MatchFinderContract $matcher)
     {
         $this->storage = $storage;
         $this->tagsService = $tagsService;
-        $this->keywordsService = $keywordsService;
-        $this->wishService = $wishService;
         $this->graphService = $graphService;
+        $this->matcher = $matcher;
     }
 
 
@@ -72,12 +65,9 @@ class SwapService
             $this->storage->saveTags($swap, $tags);
         }
 
-        $keywords = $this->keywordsService->saveAll($swap);
-        $this->storage->saveKeywords($swap, $keywords);
-
         if (array_key_exists('wish', $data)) {
             $wishes = str_replace(',', '', explode(' ', $data['wish']));
-            $wishes = $this->wishService->saveAll($wishes);
+            $wishes = $this->tagsService->saveAll($wishes);
             $this->storage->saveWishes($swap, $wishes);
         }
 
@@ -103,21 +93,11 @@ class SwapService
             'value' => $id
         ]], [], 1);
 
-        return !empty($swaps) ? $swaps[0] : null;
+        return $swaps->count() > 0 ? $swaps->first() : null;
     }
 
     public function findMatches(Swap $swap)
     {
-        $wishes = $swap->wishes->getDictionary();
-        $wishKeywords = array_map(function ($wish) {
-            return $wish->name;
-        }, $wishes);
-
-        $keywords = $swap->keywords->getDictionary();
-        $keywords = array_map(function ($keyword) {
-            return $keyword->name;
-        }, $keywords);
-
-        return $this->storage->findByKeywords($wishKeywords, $keywords);
+        return $this->matcher->find($swap);
     }
 }

@@ -14,12 +14,14 @@ class CreateTags extends Migration
     {
         Schema::create('tags', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name', 30);
+            $table->index('name');
         });
 
         Schema::create('swap_tags', function (Blueprint $table) {
             $table->integer('swap_id');
             $table->integer('tag_id');
+            $table->index(['swap_id', 'tag_id']);
         });
     }
 

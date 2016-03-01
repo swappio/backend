@@ -49,9 +49,46 @@ class SwapsStorage implements SwapsStorageContract
             $query->limit($limit);
         }
 
-        $queryBuilder->with(['wishes', 'keywords', 'author', 'tags', 'author.feedbacks']);
+        $queryBuilder->with(['wishes', 'author', 'tags', 'author.feedbacks']);
 
         return $queryBuilder->get();
+    }
+
+    public function findWithTags($tags)
+    {
+        $swapTagsCount = $this->getSwapTagsCount($tags);
+
+        $neededSwapIds = [];
+        $tagsCount = count($tags);
+        foreach ($swapTagsCount as $swapId => $count) {
+            if ($count >= $tagsCount) {
+                $neededSwapIds[] = $swapId;
+            }
+        }
+
+        $queryBuilder = $this->getQueryBuilder();
+
+        return $queryBuilder->whereIn('id', $neededSwapIds)
+            ->with(['wishes', 'tags', 'author', 'author.feedbacks'])
+            ->get();
+    }
+
+    public function findWithAnyOfTags($tags)
+    {
+        $swapTagsCount = $this->getSwapTagsCount($tags);
+
+        uasort($swapTagsCount, function ($a, $b) {
+            return $a < $b;
+        });
+
+        $neededSwapIds = array_keys($swapTagsCount);
+
+        $queryBuilder = $this->getQueryBuilder();
+        $query = $queryBuilder->getQuery();
+        $query->orderByRaw('FIELD(id, ' . implode(',', $neededSwapIds) . ')');
+        return $queryBuilder->whereIn('id', $neededSwapIds)
+            ->with(['wishes', 'tags', 'author', 'author.feedbacks'])
+            ->get();
     }
 
     /**
@@ -70,39 +107,34 @@ class SwapsStorage implements SwapsStorageContract
         return $swap->tags()->saveMany($tags);
     }
 
-    public function saveKeywords($swap, $keywords)
-    {
-        return $swap->keywords()->saveMany($keywords);
-    }
-
     public function saveWishes($swap, $wishes)
     {
         return $swap->wishes()->saveMany($wishes);
     }
 
-    public function findByKeywords($wishKeywords, $keywords)
-    {
-        $queryBuilder = $this->getQueryBuilder();
-        $query = $queryBuilder->getQuery();
-        $query->from('swaps')
-            ->join('swap_keywords', 'swaps.id', '=', 'swap_keywords.swap_id')
-            ->join('keywords', 'keywords.id', '=', 'swap_keywords.keyword_id')
-            ->whereIn('keywords.name', $wishKeywords);
-
-        $swapsID = $query->get(['swaps.id']);
-        if (count($swapsID) === 0) {
-            return [];
-        }
-
-        $query = $this->getQueryBuilder()->whereHas('wishes', function ($query) use ($keywords) {
-            $query->whereIn('wishes.name', $keywords);
-        });
-
-        return $query->with(['wishes', 'author', 'tags'])->get()->all();
-    }
-
     private function getQueryBuilder()
     {
         return clone $this->queryBuilder;
+    }
+
+    private function getSwapTagsCount($tags)
+    {
+        $queryBuilder = $this->getQueryBuilder();
+        $query = $queryBuilder->getQuery();
+        $query->from('tags')
+            ->join('swap_tags', 'tags.id', '=', 'swap_tags.tag_id')
+            ->whereIn('tags.name', $tags);
+
+        $rows = $query->get(['swap_tags.swap_id']);
+        $swapTagsCount = [];
+
+        foreach ($rows as $row) {
+            if (!array_key_exists($row->swap_id, $swapTagsCount)) {
+                $swapTagsCount[$row->swap_id] = 0;
+            }
+            $swapTagsCount[$row->swap_id]++;
+        }
+
+        return $swapTagsCount;
     }
 }

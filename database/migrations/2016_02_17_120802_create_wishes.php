@@ -12,14 +12,9 @@ class CreateWishes extends Migration
      */
     public function up()
     {
-        Schema::create('wishes', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-        });
-
         Schema::create('swap_wishes', function (Blueprint $table) {
             $table->integer('swap_id');
-            $table->integer('wish_id');
+            $table->integer('tag_id');
         });
     }
 
@@ -30,7 +25,6 @@ class CreateWishes extends Migration
      */
     public function down()
     {
-        Schema::drop('wishes');
         Schema::drop('swap_wishes');
     }
 }

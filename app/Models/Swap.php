@@ -27,17 +27,9 @@ class Swap extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function keywords()
-    {
-        return $this->belongsToMany('App\Models\Keyword', 'swap_keywords', 'swap_id', 'keyword_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
     public function wishes()
     {
-        return $this->belongsToMany('App\Models\Wish', 'swap_wishes', 'swap_id', 'wish_id');
+        return $this->belongsToMany('App\Models\Tag', 'swap_wishes', 'swap_id', 'tag_id');
     }
 
     /**

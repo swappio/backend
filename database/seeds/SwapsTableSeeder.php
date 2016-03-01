@@ -68,23 +68,18 @@ class SwapsTableSeeder extends Seeder
         ]);
 
         app('db')->table('swap_tags')->insert([
-            'swap_id' => 1,
+            'swap_id' => 2,
             'tag_id' => 3,
         ]);
 
         app('db')->table('swap_tags')->insert([
             'swap_id' => 2,
-            'tag_id' => 1,
+            'tag_id' => 4,
         ]);
 
         app('db')->table('swap_tags')->insert([
-            'swap_id' => 2,
+            'swap_id' => 3,
             'tag_id' => 2,
-        ]);
-
-        app('db')->table('swap_tags')->insert([
-            'swap_id' => 2,
-            'tag_id' => 3,
         ]);
 
         app('db')->table('swap_tags')->insert([
@@ -92,47 +87,36 @@ class SwapsTableSeeder extends Seeder
             'tag_id' => 5,
         ]);
 
-        // WISHES
+        //WISHES
 
-        app('db')->table('wishes')->insert([
-            'name' => 'Book',
-        ]);
-
-        app('db')->table('wishes')->insert([
-            'name' => 'Car',
-        ]);
-
-        app('db')->table('wishes')->insert([
-            'name' => 'Watch',
-        ]);
-
-        app('db')->table('wishes')->insert([
-            'name' => 'Anything',
+        app('db')->table('swap_wishes')->insert([
+            'swap_id' => 1,
+            'tag_id' => 3,
         ]);
 
         app('db')->table('swap_wishes')->insert([
             'swap_id' => 1,
-            'wish_id' => 1,
+            'tag_id' => 4,
         ]);
 
         app('db')->table('swap_wishes')->insert([
             'swap_id' => 1,
-            'wish_id' => 2,
+            'tag_id' => 5,
         ]);
 
         app('db')->table('swap_wishes')->insert([
             'swap_id' => 2,
-            'wish_id' => 3,
+            'tag_id' => 1,
+        ]);
+
+        app('db')->table('swap_wishes')->insert([
+            'swap_id' => 2,
+            'tag_id' => 2,
         ]);
 
         app('db')->table('swap_wishes')->insert([
             'swap_id' => 3,
-            'wish_id' => 1,
-        ]);
-
-        app('db')->table('swap_wishes')->insert([
-            'swap_id' => 3,
-            'wish_id' => 4,
+            'tag_id' => 1,
         ]);
     }
 }

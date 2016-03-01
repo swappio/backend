@@ -2,22 +2,18 @@
 
 namespace App\Providers;
 
-use App\Models\Keyword;
 use App\Models\Swap;
 use App\Models\Tag;
 use App\Models\User;
-use App\Models\Wish;
 use App\Services\Finders\Matches\CompositeMatchFinder;
 use App\Services\Finders\Matches\ExactMatchFinder;
 use App\Services\Finders\Matches\FloatMatchFinder;
 use App\Storages\GraphStorage;
-use App\Storages\KeywordsStorage;
 use App\Storages\Proxies\SwapsStorageProxy;
 use App\Storages\Proxies\UserStorageProxy;
 use App\Storages\SwapsStorage;
 use App\Storages\TagsStorage;
 use App\Storages\UserStorage;
-use App\Storages\WishStorage;
 use Everyman\Neo4j\Client;
 use Illuminate\Support\ServiceProvider;
 

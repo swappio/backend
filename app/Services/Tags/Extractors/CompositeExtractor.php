@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Service\Tags\Extractors;
+namespace App\Services\Tags\Extractors;
 
-use App\Contracts\Services\Tags\ExtratorContract;
+use App\Contracts\Services\Tags\ExtractorContract;
 use App\Models\Swap;
 
-class CompositeExtrator implements ExtratorContract
+class CompositeExtractor implements ExtractorContract
 {
     /**
-     * @var ExtratorContract[]
+     * @var ExtractorContract[]
      */
     private $extractors = [];
 
     /**
      * CompositeExtrator constructor.
-     * @param \App\Contracts\Services\Tags\ExtratorContract[] $extractors
+     * @param \App\Contracts\Services\Tags\ExtractorContract[] $extractors
      */
     public function __construct(array $extractors)
     {

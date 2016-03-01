@@ -8,7 +8,7 @@ use App\Models\Swap;
  * Interface ExtratorContract
  * @package App\Contracts\Services\Tags
  */
-interface ExtratorContract
+interface ExtractorContract
 {
     /**
      * @param Swap $swap

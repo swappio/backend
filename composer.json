@@ -12,7 +12,7 @@
         "predis/predis": "~1.0",
         "illuminate/redis": "^5.2",
         "laravel/socialite": "^2.0",
-        "everyman/neo4jphp": "dev-master"
+        "everyman/neo4jphp": "dev-null-fix-php7 as dev-master"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.1",
@@ -21,6 +21,12 @@
         "phpunit/phpunit": "~4.0",
         "codeclimate/php-test-reporter": "dev-master"
     },
+    "repositories": [
+      {
+        "type": "git",
+        "url": "https://github.com/andrewnester/neo4jphp.git"
+      }
+    ],
     "autoload": {
         "classmap": [
             "database"
